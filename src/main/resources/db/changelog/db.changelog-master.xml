@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="marek">
+        <sql>
+            create table loan_clients(
+                loan_client_id bigint,
+                client_number varchar(20) not null ,
+                constraint pk_loan_clients primary key (loan_client_id)
+            );
+            create sequence sq_loan_clients;
+
+            create table loans(
+                loan_id bigint,
+                loan_client_id bigint,
+                loan_amount int not null ,
+                interest_rate decimal(9,2) not null ,
+                days_past_due int,
+                status char not null,
+                agreement_number varchar(20) not null,
+                investment_number varchar(20) not null,
+                investment_amount decimal(9,2) not null,
+                investment_date date not null ,
+                returned_amount decimal(9,2) not null,
+                paid_interest decimal(9,2) not null,
+                paid_penalty decimal(9,2) not null,
+                remaining_installments int,
+                remaining_installment_amount decimal(9,2),
+                expected_interest_amount decimal(9,2),
+                next_installment_date date,
+                sellable boolean,
+                current_value decimal(9,2),
+                discount_amount decimal(9,2),
+                paid_at date,
+                paid_amount decimal(9,2),
+                constraint pk_loans primary key (loan_id),
+                constraint fk_loans_loan_client foreign key (loan_client_id) references loan_clients(loan_client_id)
+            );
+            create sequence sq_loans;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
